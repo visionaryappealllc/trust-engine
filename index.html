@@ -46,7 +46,6 @@
             position: relative;
         }
 
-        /* Radar Scanning Line Animation */
         .scan-line {
             position: absolute;
             top: 0;
@@ -96,13 +95,25 @@
             -webkit-text-fill-color: transparent;
         }
 
-        header p {
-            color: #94a3b8;
-            margin-top: 6px;
-            font-size: 0.85rem;
+        /* Executive Name & Title Styling */
+        .executive-meta {
+            margin-top: 10px;
+            font-size: 1.05rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            color: #fff;
+            background: linear-gradient(90deg, #f8fafc, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .executive-sub {
+            color: #64748b;
+            font-size: 0.8rem;
+            font-weight: 700;
             letter-spacing: 2px;
             text-transform: uppercase;
-            font-weight: 700;
+            margin-top: 4px;
         }
 
         .input-group {
@@ -117,10 +128,8 @@
             text-transform: uppercase;
             letter-spacing: 1.5px;
             color: var(--neon-blue);
-            text-shadow: 0 0 5px rgba(56, 189, 248, 0.2);
         }
 
-        /* Making menus pop out from the background */
         select, input {
             width: 100%;
             padding: 16px;
@@ -134,7 +143,6 @@
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
         }
 
-        /* Interactive physics: menu expands and glows on touch */
         select:focus, input:focus {
             outline: none;
             border-color: var(--neon-blue);
@@ -142,7 +150,6 @@
             transform: scale(1.01);
         }
 
-        /* High-Impact Interactive Button */
         .btn-audit {
             width: 100%;
             padding: 18px;
@@ -165,14 +172,12 @@
             background: linear-gradient(135deg, #5a52e6 0%, #7376f8 100%);
         }
 
-        /* Button physically pushes down when tapped */
         .btn-audit:active {
             transform: translateY(3px);
             border-bottom: 1px solid #3730a3;
             box-shadow: 0 2px 10px rgba(99, 102, 241, 0.4);
         }
 
-        /* Graphic Results Panel */
         .output-panel {
             margin-top: 35px;
             padding: 30px;
@@ -199,7 +204,6 @@
             border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
-        /* Traffic Light Signal Upgrade */
         .traffic-light {
             width: 45px;
             height: 45px;
@@ -232,7 +236,6 @@
             margin-bottom: 4px;
         }
 
-        /* Ledger Table Design */
         .logger-section {
             margin-top: 40px;
             padding-top: 30px;
@@ -246,7 +249,6 @@
             color: white;
             text-transform: uppercase;
             text-align: center;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
         }
 
         .log-table {
@@ -339,7 +341,8 @@
     <header>
         <img src="1778981814085.png" alt="Director Profile" class="profile-pic">
         <h1>Trust & Reputation Engine</h1>
-        <p>Framework Matrix Integration</p>
+        <div class="executive-meta">Michael Dennis</div>
+        <div class="executive-sub">Founder & Managing Director</div>
     </header>
 
     <div class="input-group">
