@@ -41,6 +41,7 @@
             padding: 40px;
             border-radius: 16px;
             box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+            margin-bottom: 40px;
         }
 
         header {
@@ -167,6 +168,54 @@
             color: var(--text-muted);
         }
 
+        /* Logger Section Styling */
+        .logger-section {
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px solid #334155;
+        }
+
+        .logger-section h3 {
+            font-size: 1.2rem;
+            letter-spacing: 0.5px;
+            margin-bottom: 15px;
+            color: var(--text-main);
+            text-align: center;
+        }
+
+        .log-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            font-size: 0.9rem;
+        }
+
+        .log-table th, .log-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #334155;
+        }
+
+        .log-table th {
+            color: var(--text-muted);
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 0.5px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+        }
+
+        .badge-green { background: rgba(34, 197, 94, 0.2); color: var(--green-light); }
+        .badge-yellow { background: rgba(234, 179, 8, 0.2); color: var(--yellow-light); }
+        .badge-red { background: rgba(239, 68, 68, 0.2); color: var(--red-light); }
+
         .donation-section {
             margin-top: 40px;
             padding-top: 30px;
@@ -205,10 +254,6 @@
 
         .btn-cashapp:hover {
             opacity: 0.9;
-        }
-
-        .btn-cashapp:active {
-            transform: scale(0.98);
         }
     </style>
 </head>
@@ -265,6 +310,20 @@
         </div>
     </div>
 
+    <div class="logger-section">
+        <h3>Recent Community Pool Audits</h3>
+        <table class="log-table">
+            <thead>
+                <tr>
+                    <th>Target Platform</th>
+                    <th>Classification Status</th>
+                </tr>
+            </thead>
+            <tbody id="logHistoryBody">
+                </tbody>
+        </table>
+    </div>
+
     <div class="donation-section">
         <h3>Support the Mission</h3>
         <p>Help fuel infrastructure scaling and keep the automated framework available to protect the community pool.</p>
@@ -275,6 +334,9 @@
 </div>
 
 <script>
+    // Load historical logs immediately upon page opening
+    document.addEventListener("DOMContentLoaded", displayLogs);
+
     function evaluatePlatform() {
         const name = document.getElementById('platformName').value.trim() || "Unknown Target";
         const age = document.getElementById('domainAge').value;
@@ -291,6 +353,8 @@
         panel.style.display = "block";
         resName.innerText = name;
 
+        let finalStatus = "";
+
         if (payout === 'default') {
             light.style.backgroundColor = 'var(--red-light)';
             light.style.boxShadow = '0 0 20px var(--red-light)';
@@ -298,6 +362,7 @@
             title.style.color = 'var(--red-light)';
             resAction.innerText = "Immediate critical block executed. Platform actively defaults on payments or locks user cash-outs.";
             resSteps.innerText = "Blacklist the application immediately, notify the community network pool, and halt all interactions.";
+            finalStatus = "Red Light";
         }
         else if (age === 'new' || compliance === 'unverified' || payout === 'delayed') {
             light.style.backgroundColor = 'var(--yellow-light)';
@@ -306,6 +371,7 @@
             title.style.color = 'var(--yellow-light)';
             resAction.innerText = "Velocity pause applied. Platform features high withdrawal thresholds, hidden parameters, or unverified ledger history.";
             resSteps.innerText = "Proceed with extreme caution. Do not input payment details or invest time until independent community proof of payout is uploaded.";
+            finalStatus = "Yellow Light";
         }
         else {
             light.style.backgroundColor = 'var(--green-light)';
@@ -314,7 +380,45 @@
             title.style.color = 'var(--green-light)';
             resAction.innerText = "All guardrails clear. Platform verified with consistent, clean payout history and transparent infrastructure.";
             resSteps.innerText = "Issue trusted validation signature, log verification to central index, and proceed with full operational speed.";
+            finalStatus = "Green Light";
         }
+
+        saveAuditToLog(name, finalStatus);
+    }
+
+    function saveAuditToLog(name, status) {
+        let entries = JSON.parse(localStorage.getItem("auditLogs")) || [];
+        // Prevent duplicate entries right next to each other
+        if(entries.length === 0 || entries[0].name !== name || entries[0].status !== status) {
+            entries.unshift({ name: name, status: status });
+            if (entries.length > 5) entries.pop(); // Keep the list clean at top 5 recent checks
+            localStorage.setItem("auditLogs", JSON.stringify(entries));
+            displayLogs();
+        }
+    }
+
+    function displayLogs() {
+        const tbody = document.getElementById("logHistoryBody");
+        let entries = JSON.parse(localStorage.getItem("auditLogs")) || [];
+        
+        if(entries.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="2" style="color:var(--text-muted); text-align:center;">No recent audits logged. Run your first live scan above!</td></tr>`;
+            return;
+        }
+
+        tbody.innerHTML = "";
+        entries.forEach(item => {
+            let badgeClass = "badge-green";
+            if(item.status === "Yellow Light") badgeClass = "badge-yellow";
+            if(item.status === "Red Light") badgeClass = "badge-red";
+
+            tbody.innerHTML += `
+                <tr>
+                    <td style="font-weight: 500;">${item.name}</td>
+                    <td><span class="badge ${badgeClass}">${item.status}</span></td>
+                </tr>
+            `;
+        });
     }
 </script>
 
