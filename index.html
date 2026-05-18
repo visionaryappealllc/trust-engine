@@ -14,6 +14,7 @@
             --yellow-light: #eab308;
             --red-light: #ef4444;
             --accent: #6366f1;
+            --cash-app-green: #00D632;
         }
 
         * {
@@ -104,7 +105,7 @@
             border-color: var(--accent);
         }
 
-        button {
+        .btn-audit {
             width: 100%;
             padding: 14px;
             background: var(--accent);
@@ -119,11 +120,11 @@
             letter-spacing: 1px;
         }
 
-        button:hover {
+        .btn-audit:hover {
             background: #4f46e5;
         }
 
-        button:active {
+        .btn-audit:active {
             transform: scale(0.99);
         }
 
@@ -165,6 +166,51 @@
             font-weight: bold;
             color: var(--text-muted);
         }
+
+        /* Support Section Styling */
+        .donation-section {
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px solid #334155;
+            text-align: center;
+        }
+
+        .donation-section h3 {
+            font-size: 1.2rem;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+            color: var(--text-main);
+        }
+
+        .donation-section p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .btn-cashapp {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background: var(--cash-app-green);
+            color: #000000;
+            text-decoration: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 1rem;
+            transition: opacity 0.2s, transform 0.1s;
+        }
+
+        .btn-cashapp:hover {
+            opacity: 0.9;
+        }
+
+        .btn-cashapp:active {
+            transform: scale(0.98);
+        }
     </style>
 </head>
 <body>
@@ -205,7 +251,7 @@
         </select>
     </div>
 
-    <button onclick="evaluatePlatform()">Run Automated Audit</button>
+    <button class="btn-audit" onclick="evaluatePlatform()">Run Automated Audit</button>
 
     <div class="output-panel" id="outputPanel">
         <div class="signal-container">
@@ -217,6 +263,14 @@
             <p><span class="label-bold">Automated Action:</span> <span id="resAction"></span></p>
             <p><span class="label-bold">Operational Next Steps:</span> <span id="resSteps"></span></p>
         </div>
+    </div>
+
+    <div class="donation-section">
+        <h3>Support the Mission</h3>
+        <p>Help fuel infrastructure scaling and keep the automated framework available to protect the community pool.</p>
+        <a href="https://cash.app/$VisionaryAppealLLC" target="_blank" class="btn-cashapp">
+            💸 Contribute via Cash App
+        </a>
     </div>
 </div>
 
@@ -265,4 +319,4 @@
 </script>
 
 </body>
-</html>                    
+</html>
