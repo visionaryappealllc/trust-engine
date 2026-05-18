@@ -167,7 +167,6 @@
             color: var(--text-muted);
         }
 
-        /* Support Section Styling */
         .donation-section {
             margin-top: 40px;
             padding-top: 30px;
@@ -223,30 +222,31 @@
     </header>
 
     <div class="input-group">
-        <label for="platformName">Platform / Domain Name</label>
-        <input type="text" id="platformName" placeholder="e.g., target-platform.com" required>
+        <label for="platformName">Platform / App / Domain Name</label>
+        <input type="text" id="platformName" placeholder="e.g., target-app-or-url.com" required>
     </div>
 
     <div class="input-group">
-        <label for="domainAge">Domain Age</label>
+        <label for="domainAge">Developer / Domain Age</label>
         <select id="domainAge">
-            <option value="old">Established (Greater than 30 Days)</option>
-            <option value="new">Brand New (Less than 30 Days)</option>
+            <option value="old">Established Track Record (Greater than 30 Days)</option>
+            <option value="new">Brand New Entity (Less than 30 Days / No History)</option>
         </select>
     </div>
 
     <div class="input-group">
-        <label for="blacklistStatus">Blacklist & Fraud Logs Check</label>
-        <select id="blacklistStatus">
-            <option value="clean">Clean (No malicious patterns or scam reports)</option>
-            <option value="flagged">Flagged / Active Scam Reports Found</option>
+        <label for="payoutStatus">Verified Payout Ledger & Fraud Check</label>
+        <select id="payoutStatus">
+            <option value="clean">Clean (Consistent payout history, zero withdrawal blocks)</option>
+            <option value="delayed">Unverified/Delayed (High thresholds, missing parameters)</option>
+            <option value="default">Payment Default (Frozen balances, confirmed scam reports)</option>
         </select>
     </div>
 
     <div class="input-group">
-        <label for="compliance">Compliance & Metadata Verification</label>
+        <label for="compliance">Compliance & Architectural Verification</label>
         <select id="compliance">
-            <option value="verified">Verified Compliance (Secure layout & clear ownership)</option>
+            <option value="verified">Verified Compliance (Secure layout & transparent ownership)</option>
             <option value="unverified">Unverified Metadata (Hidden details / Missing protocol)</option>
         </select>
     </div>
@@ -276,9 +276,9 @@
 
 <script>
     function evaluatePlatform() {
-        const name = document.getElementById('platformName').value.trim() || "Unknown Platform";
+        const name = document.getElementById('platformName').value.trim() || "Unknown Target";
         const age = document.getElementById('domainAge').value;
-        const blacklist = document.getElementById('blacklistStatus').value;
+        const payout = document.getElementById('payoutStatus').value;
         const compliance = document.getElementById('compliance').value;
 
         const panel = document.getElementById('outputPanel');
@@ -291,29 +291,29 @@
         panel.style.display = "block";
         resName.innerText = name;
 
-        if (blacklist === 'flagged') {
+        if (payout === 'default') {
             light.style.backgroundColor = 'var(--red-light)';
             light.style.boxShadow = '0 0 20px var(--red-light)';
-            title.innerText = "RED LIGHT - AUTOMATED BLOCK";
+            title.innerText = "RED LIGHT - CONFIRMED DEFAULT";
             title.style.color = 'var(--red-light)';
-            resAction.innerText = "Immediate system-wide block executed. Malicious templates or active fraud logs detected.";
-            resSteps.innerText = "Flag entry, alert the community pool, and generate a formal automated fraud signature.";
+            resAction.innerText = "Immediate critical block executed. Platform actively defaults on payments or locks user cash-outs.";
+            resSteps.innerText = "Blacklist the application immediately, notify the community network pool, and halt all interactions.";
         }
-        else if (age === 'new' || compliance === 'unverified') {
+        else if (age === 'new' || compliance === 'unverified' || payout === 'delayed') {
             light.style.backgroundColor = 'var(--yellow-light)';
             light.style.boxShadow = '0 0 20px var(--yellow-light)';
             title.innerText = "YELLOW LIGHT - CAUTION HOLD";
             title.style.color = 'var(--yellow-light)';
-            resAction.innerText = "Velocity pause applied. Platform falls below baseline automation trust requirements.";
-            resSteps.innerText = "Hold processing. Request additional domain ownership verification and cross-reference records manually.";
+            resAction.innerText = "Velocity pause applied. Platform features high withdrawal thresholds, hidden parameters, or unverified ledger history.";
+            resSteps.innerText = "Proceed with extreme caution. Do not input payment details or invest time until independent community proof of payout is uploaded.";
         }
         else {
             light.style.backgroundColor = 'var(--green-light)';
             light.style.boxShadow = '0 0 20px var(--green-light)';
             title.innerText = "GREEN LIGHT - FULL VELOCITY";
             title.style.color = 'var(--green-light)';
-            resAction.innerText = "All architectural guardrails clear. Platform verified safe.";
-            resSteps.innerText = "Issue trusted verification badge, log to database, and proceed with full operational velocity.";
+            resAction.innerText = "All guardrails clear. Platform verified with consistent, clean payout history and transparent infrastructure.";
+            resSteps.innerText = "Issue trusted validation signature, log verification to central index, and proceed with full operational speed.";
         }
     }
 </script>
