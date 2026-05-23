@@ -13,7 +13,7 @@
     <style>
         :root {
             --bg-gradient: linear-gradient(135deg, #020617 0%, #0b0f19 50%, #020617 100%);
-            --panel-bg: rgba(15, 23, 42, 0.65);
+            --panel-bg: #0f172a;
             --neon-blue: #38bdf8;
             --neon-indigo: #6366f1;
             --text-main: #f8fafc;
@@ -46,14 +46,13 @@
             width: 100%;
             max-width: 700px;
             background: var(--panel-bg);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
             border-radius: 28px;
             border: 2px solid var(--neon-indigo);
             padding: 40px;
-            box-shadow: 0 0 30px rgba(99, 102, 241, 0.15), inset 0 0 15px rgba(99, 102, 241, 0.05);
+            box-shadow: 0 0 30px rgba(99, 102, 241, 0.15);
             position: relative;
-            transition: border-color 0.6s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: border-color 0.4s ease, box-shadow 0.4s ease;
+            z-index: 1;
         }
 
         .scan-line {
@@ -66,6 +65,7 @@
             opacity: 0;
             z-index: 10;
             box-shadow: 0 0 15px var(--neon-blue);
+            pointer-events: none;
         }
 
         @keyframes scanning {
@@ -82,6 +82,8 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            position: relative;
+            z-index: 2;
         }
 
         .profile-pic {
@@ -99,10 +101,9 @@
             font-weight: 900;
             letter-spacing: 3px;
             text-transform: uppercase;
+            color: #ffffff;
             text-shadow: 0 0 15px rgba(56, 189, 248, 0.3);
-            background: linear-gradient(90deg, #ffffff, var(--neon-blue));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            margin-bottom: 5px;
         }
 
         .executive-meta {
@@ -110,10 +111,7 @@
             font-size: 1.05rem;
             font-weight: 800;
             letter-spacing: 1px;
-            color: #fff;
-            background: linear-gradient(90deg, #f8fafc, #94a3b8);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: #ffffff;
         }
 
         .executive-sub {
@@ -129,16 +127,15 @@
             display: none;
             background: linear-gradient(90deg, #1e1b4b, #312e81);
             border: 2px solid var(--neon-blue);
-            box-shadow: 0 0 20px rgba(56, 189, 248, 0.3);
             border-radius: 14px;
             padding: 16px;
             margin-bottom: 25px;
             align-items: center;
             justify-content: space-between;
-            animation: panelPop 0.4s ease forwards;
         }
 
         .install-text {
+            color: #ffffff;
             font-size: 0.85rem;
             font-weight: 700;
             letter-spacing: 0.5px;
@@ -158,6 +155,8 @@
 
         .input-group {
             margin-bottom: 25px;
+            position: relative;
+            z-index: 2;
         }
 
         label {
@@ -176,21 +175,19 @@
             background: #020617;
             border: 2px solid rgba(99, 102, 241, 0.4);
             border-radius: 12px;
-            color: white;
+            color: #ffffff;
             font-size: 1.05rem;
             font-weight: 600;
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.2s ease;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
             text-align: center;
             letter-spacing: 1px;
-            margin-bottom: 5px;
         }
 
         input[type="text"]:focus {
             outline: none;
             border-color: var(--neon-blue);
             box-shadow: 0 0 25px rgba(56, 189, 248, 0.4);
-            transform: scale(1.01);
         }
 
         .ocr-upload-zone {
@@ -201,7 +198,6 @@
             text-align: center;
             cursor: pointer;
             transition: all 0.2s ease;
-            position: relative;
         }
 
         .ocr-upload-zone:hover {
@@ -235,7 +231,7 @@
             width: 100%;
             padding: 18px;
             background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
-            color: white;
+            color: #ffffff;
             border: none;
             border-radius: 12px;
             font-size: 1.1rem;
@@ -247,6 +243,8 @@
             box-shadow: 0 6px 20px rgba(99, 102, 241, 0.3);
             border-bottom: 4px solid #3730a3;
             margin-top: 25px;
+            position: relative;
+            z-index: 2;
         }
 
         .btn-audit:active {
@@ -258,11 +256,12 @@
             margin-top: 35px;
             padding: 30px;
             border-radius: 20px;
-            background: rgba(2, 6, 23, 0.8);
+            background: #020617;
             border: 2px solid rgba(255, 255, 255, 0.05);
             display: none;
-            box-shadow: inset 0 0 20px rgba(255,255,255,0.02);
-            animation: panelPop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            position: relative;
+            z-index: 2;
+            animation: panelPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
         }
 
         @keyframes panelPop {
@@ -304,7 +303,7 @@
 
         .label-bold {
             font-weight: 800;
-            color: #475569;
+            color: #64748b;
             text-transform: uppercase;
             font-size: 0.78rem;
             display: block;
@@ -316,13 +315,15 @@
             font-size: 1.5rem;
             font-weight: 900;
             letter-spacing: 0.5px;
-            text-shadow: 0 0 10px rgba(255,255,255,0.1);
+            color: #ffffff;
         }
 
         .logger-section {
             margin-top: 40px;
             padding-top: 30px;
             border-top: 2px dashed rgba(99, 102, 241, 0.2);
+            position: relative;
+            z-index: 2;
         }
 
         .logger-section h3 {
@@ -331,6 +332,7 @@
             margin-bottom: 20px;
             text-transform: uppercase;
             text-align: center;
+            color: #ffffff;
         }
 
         .log-table {
@@ -340,7 +342,7 @@
         }
 
         .log-table th {
-            color: #475569;
+            color: #64748b;
             text-transform: uppercase;
             font-size: 0.75rem;
             padding: 0 12px;
@@ -351,6 +353,7 @@
             background: rgba(2, 6, 23, 0.4);
             border-top: 1px solid rgba(99, 102, 241, 0.08);
             border-bottom: 1px solid rgba(99, 102, 241, 0.08);
+            color: #ffffff;
         }
 
         .log-table tr td:first-child { border-left: 1px solid rgba(99, 102, 241, 0.08); border-radius: 10px 0 0 10px; }
@@ -374,6 +377,8 @@
             padding-top: 30px;
             border-top: 2px dashed rgba(99, 102, 241, 0.2);
             text-align: center;
+            position: relative;
+            z-index: 2;
         }
 
         .btn-cashapp {
@@ -400,5 +405,285 @@
     </div>
 
     <header>
-        <img src="17789818
-    
+        <img src="1778981814085.png" alt="Director Profile" class="profile-pic">
+        <h1>Trust & Reputation Engine</h1>
+        <div class="executive-meta">Michael Dennis</div>
+        <div class="executive-sub">Founder & Managing Director</div>
+    </header>
+
+    <div class="input-group">
+        <label for="platformName">Target Identity Signature (App Name or Domain)</label>
+        <input type="text" id="platformName" placeholder="e.g., JustPlay, Pulsz, SpinCasino..." required>
+    </div>
+
+    <div class="input-group">
+        <label>Greenlight Ledger Proof Verification Layer</label>
+        <div class="ocr-upload-zone" onclick="document.getElementById('ocrFileInput').click()">
+            <div class="ocr-text-prompt" id="uploadPrompt">
+                📸 Drag & drop or <span>Upload Payout Receipt</span> (Optional)
+                <small style="color:#64748b; font-size:0.7rem; display:block; margin-top:5px;">Supports OCR data validation to clear ledger restriction flags</small>
+            </div>
+            <div class="file-status-badge" id="fileStatusBadge">🔒 Core Image Document Cached Successfully</div>
+            <input type="file" id="ocrFileInput" accept="image/*" style="display:none;" onchange="handleFileSelected()">
+        </div>
+    </div>
+
+    <button class="btn-audit" onclick="triggerCinematicAudit()">Initiate Engine Audit</button>
+
+    <div class="output-panel" id="outputPanel">
+        <div class="signal-container" id="signalContainerContainer">
+            <div class="traffic-light" id="lightSignal"></div>
+            <div class="status-title" id="statusTitle">---</div>
+        </div>
+        <div class="result-details">
+            <p><span class="label-bold">Target Identity Matrix</span> <span id="resName" style="color:#ffffff; font-weight:700; font-size:1.1rem;"></span></p>
+            <p><span class="label-bold">Threat & Reputation Score</span> <span id="resScore" class="counter-glow-text">0</span></p>
+            <p><span class="label-bold">OCR Document Hash Validation</span> <span id="resOcr" style="color:#94a3b8; font-size:0.9rem; font-family: monospace;"></span></p>
+            <p><span class="label-bold">System Action Command</span> <span id="resAction" style="color:#f8fafc;"></span></p>
+            <p><span class="label-bold">Next Directives Protocol</span> <span id="resSteps" style="color:var(--neon-blue); font-weight: 600;"></span></p>
+        </div>
+    </div>
+
+    <div class="logger-section">
+        <h3>Network Pool History Index</h3>
+        <table class="log-table">
+            <thead>
+                <tr>
+                    <th style="text-align: left;">Target Entity</th>
+                    <th style="text-align: right;">Matrix Classification</th>
+                </tr>
+            </thead>
+            <tbody id="logHistoryBody"></tbody>
+        </table>
+    </div>
+
+    <div class="donation-section">
+        <h3 style="color: var(--neon-blue); margin-bottom: 8px; text-transform: uppercase; font-size: 1.1rem; letter-spacing: 1.5px;">Support Infrastructure Scaling</h3>
+        <p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 22px;">Fuel automated matrix operations to secure and maintain the community network pool.</p>
+        <a href="https://cash.app/$VisionaryAppealLLC" target="_blank" class="btn-cashapp">
+            💸 Secure Contribution via Cash App
+        </a>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", displayLogs);
+
+    let deferredPrompt;
+    const installBanner = document.getElementById('installBanner');
+    const installBtn = document.getElementById('installBtn');
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        installBanner.style.display = 'flex';
+    });
+
+    if(installBtn) {
+        installBtn.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    installBanner.style.display = 'none';
+                }
+                deferredPrompt = null;
+            }
+        });
+    }
+
+    window.addEventListener('appinstalled', () => {
+        installBanner.style.display = 'none';
+    });
+
+    let targetHasImage = false;
+    function handleFileSelected() {
+        const fileInput = document.getElementById('ocrFileInput');
+        const badge = document.getElementById('fileStatusBadge');
+        const promptText = document.getElementById('uploadPrompt');
+        
+        if(fileInput.files.length > 0) {
+            targetHasImage = true;
+            badge.style.display = "block";
+            promptText.style.display = "none";
+        }
+    }
+
+    function triggerCinematicAudit() {
+        const nameInput = document.getElementById('platformName').value.trim();
+        if(!nameInput) {
+            alert("MATRIX ERROR: Input signature required.");
+            return;
+        }
+
+        const radar = document.getElementById('radarLine');
+        const panel = document.getElementById('outputPanel');
+        panel.style.display = "none";
+        radar.style.animation = "none";
+        void radar.offsetWidth; 
+        radar.style.animation = "scanning 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards";
+        setTimeout(evaluatePlatform, 1100);
+    }
+
+    function animateScoreCounter(targetElement, finalValue, durationColors) {
+        let currentCount = 0;
+        const duration = 800; 
+        const frameRate = 1000 / 60; 
+        const totalSteps = Math.round(duration / frameRate);
+        const increment = finalValue / totalSteps;
+
+        const counterInterval = setInterval(() => {
+            currentCount += increment;
+            if (currentCount >= finalValue) {
+                clearInterval(counterInterval);
+                targetElement.innerText = finalValue + " / 100 " + durationColors.label;
+            } else {
+                targetElement.innerText = Math.floor(currentCount) + " / 100";
+            }
+        }, frameRate);
+    }
+
+    function evaluatePlatform() {
+        const name = document.getElementById('platformName').value.trim();
+        const panel = document.getElementById('outputPanel');
+        const light = document.getElementById('lightSignal');
+        const title = document.getElementById('statusTitle');
+        const resName = document.getElementById('resName');
+        const resScore = document.getElementById('resScore');
+        const resOcr = document.getElementById('resOcr');
+        const resAction = document.getElementById('resAction');
+        const resSteps = document.getElementById('resSteps');
+        const shellContainer = document.getElementById('mainContainerShell');
+        const internalSignalBox = document.getElementById('signalContainerContainer');
+
+        panel.style.display = "block";
+        resName.innerText = name;
+
+        const searchSignature = name.toLowerCase();
+        let baseScore = 70; 
+
+        const highRiskVectors = ['casino', 'slot', 'win cash', 'free money', 'payout bug', 'freeze', 'cheat', 'crack'];
+        const moderateRiskVectors = ['pulsz', 'justplay', 'swagbucks', 'scratch', 'lotto', 'beta', 'reward', 'gift'];
+        
+        highRiskVectors.forEach(vector => {
+            if (searchSignature.includes(vector)) baseScore -= 50;
+        });
+
+        moderateRiskVectors.forEach(vector => {
+            if (searchSignature.includes(vector)) baseScore -= 25;
+        });
+
+        if (searchSignature.length >= 4 && !highRiskVectors.some(v => searchSignature.includes(v))) {
+            baseScore += 15;
+        }
+
+        if(targetHasImage) {
+            baseScore += 20; 
+            resOcr.innerText = "✓ METADATA VERIFIED: SHA-256 MATCH // LEDGER RECEIPT LOGGED";
+            resOcr.style.color = "var(--green-glow)";
+        } else {
+            resOcr.innerText = "Ø NULL SIGNATURE: No active transaction image document uploaded.";
+            resOcr.style.color = "#64748b";
+        }
+
+        baseScore = Math.max(0, Math.min(100, baseScore));
+        let finalStatus = "";
+        let metaDetails = { label: "" };
+
+        if (baseScore >= 75) {
+            const hexColor = '#22c55e';
+            shellContainer.style.borderColor = hexColor;
+            shellContainer.style.boxShadow = '0 0 35px rgba(34, 197, 94, 0.25)';
+            internalSignalBox.style.borderColor = hexColor;
+            
+            light.style.backgroundColor = 'var(--green-glow)';
+            light.style.boxShadow = '0 0 25px var(--green-glow), 0 0 50px var(--green-glow)';
+            title.innerText = "VERIFIED CLEAR - GREEN SIGNAL";
+            title.style.color = 'var(--green-glow)';
+            
+            resScore.style.color = 'var(--green-glow)';
+            metaDetails.label = "(Optimal Integrity)";
+            
+            resAction.innerText = "All architectural guardrails clear. Target structural alignment verified safe across community consensus logs.";
+            resSteps.innerText = "Clear for full operational velocity interactions. Appending signature to trusted history database indices.";
+            finalStatus = "Green Light";
+        } 
+        else if (baseScore >= 40 && baseScore < 75) {
+            const hexColor = '#eab308';
+            shellContainer.style.borderColor = hexColor;
+            shellContainer.style.boxShadow = '0 0 35px rgba(234, 179, 8, 0.25)';
+            internalSignalBox.style.borderColor = hexColor;
+
+            light.style.backgroundColor = 'var(--yellow-glow)';
+            light.style.boxShadow = '0 0 25px var(--yellow-glow), 0 0 50px var(--yellow-glow)';
+            title.innerText = "CAUTION HOLD - YELLOW SIGNAL";
+            title.style.color = 'var(--yellow-glow)';
+            
+            resScore.style.color = 'var(--yellow-glow)';
+            metaDetails.label = "(Elevated Risk)";
+
+            resAction.innerText = "Velocity constraints applied. Signature exhibits tier-2 delayed withdrawal cycles and extreme ad thresholds.";
+            resSteps.innerText = "Maintain strict operational observation. Avoid processing large volumes before verifying independent ledger status.";
+            finalStatus = "Yellow Light";
+        } 
+        else {
+            const hexColor = '#ef4444';
+            shellContainer.style.borderColor = hexColor;
+            shellContainer.style.boxShadow = '0 0 35px rgba(239, 68, 68, 0.25)';
+            internalSignalBox.style.borderColor = hexColor;
+
+            light.style.backgroundColor = 'var(--red-glow)';
+            light.style.boxShadow = '0 0 25px var(--red-glow), 0 0 50px var(--red-glow)';
+            title.innerText = "CRITICAL BLOCK - RED SIGNAL";
+            title.style.color = 'var(--red-glow)';
+            
+            resScore.style.color = 'var(--red-glow)';
+            metaDetails.label = "(High Threat Vector)";
+
+            resAction.innerText = "System-wide override activated. Entity matches known high-risk balance freeze mechanics or critical ad-loop traps.";
+            resSteps.innerText = "Execute absolute separation protocol. Isolate local data layers and remove signature connection.";
+            finalStatus = "Red Light";
+        }
+
+        animateScoreCounter(resScore, baseScore, metaDetails);
+        saveAuditToLog(name, finalStatus);
+        
+        document.getElementById('ocrFileInput').value = "";
+        targetHasImage = false;
+        document.getElementById('fileStatusBadge').style.display = "none";
+        document.getElementById('uploadPrompt').style.display = "block";
+    }
+
+    function saveAuditToLog(name, status) {
+        let entries = JSON.parse(localStorage.getItem("auditLogs")) || [];
+        if(entries.length === 0 || entries[0].name !== name || entries[0].status !== status) {
+            entries.unshift({ name: name, status: status });
+            if (entries.length > 5) entries.pop();
+            localStorage.setItem("auditLogs", JSON.stringify(entries));
+            displayLogs();
+        }
+    }
+
+    function displayLogs() {
+        const tbody = document.getElementById("logHistoryBody");
+        let entries = JSON.parse(localStorage.getItem("auditLogs")) || [];
+        if(entries.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="2" style="color:#64748b; text-align:center; padding: 20px; font-size:0.85rem; font-weight:600;">No recent matrix entries indexed. Initialize your first live scan above.</td></tr>`;
+            return;
+        }
+        tbody.innerHTML = "";
+        entries.forEach(item => {
+            let badgeClass = "badge-green";
+            if(item.status === "Yellow Light") badgeClass = "badge-yellow";
+            if(item.status === "Red Light") badgeClass = "badge-red";
+            tbody.innerHTML += `
+                <tr style="animation: panelPop 0.3s ease forwards;">
+                    <td style="font-weight: 700; font-size:0.9rem; color:#ffffff;">${item.name}</td>
+                    <td style="text-align: right;"><span class="badge ${badgeClass}">${item.status}</span></td>
+                </tr>
+            `;
+        });
+    }
+</script>
+</body>
+</html>
