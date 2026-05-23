@@ -363,10 +363,11 @@
     <div class="output-panel" id="outputPanel">
         <div class="signal-container">
             <div class="traffic-light" id="lightSignal"></div>
-            <div class="status-title" id="installBtn" id="statusTitle">---</div>
+            <div class="status-title" id="statusTitle">---</div>
         </div>
         <div class="result-details">
             <p><span class="label-bold">Target Identity Matrix</span> <span id="resName" style="color:#fff; font-weight:700; font-size:1.1rem;"></span></p>
+            <p><span class="label-bold">Threat & Reputation Score</span> <span id="resScore" style="font-weight:800; font-size:1.1rem;"></span></p>
             <p><span class="label-bold">System Action Command</span> <span id="resAction" style="color:#f8fafc;"></span></p>
             <p><span class="label-bold">Next Directives Protocol</span> <span id="resSteps" style="color:var(--neon-blue); font-weight: 600;"></span></p>
         </div>
@@ -446,51 +447,79 @@
         const light = document.getElementById('lightSignal');
         const title = document.getElementById('statusTitle');
         const resName = document.getElementById('resName');
+        const resScore = document.getElementById('resScore');
         const resAction = document.getElementById('resAction');
         const resSteps = document.getElementById('resSteps');
 
         panel.style.display = "block";
         resName.innerText = name;
 
-        // Autonomous Algorithmic Database Filtering
         const searchSignature = name.toLowerCase();
         
-        const redList = ['casino', 'slot', 'win cash', 'free money', 'payout bug', 'freeze'];
-        const yellowList = ['pulsz', 'justplay', 'swagbucks', 'scratch', 'lotto', 'beta'];
+        // --- PHASE 2 WEIGHTED SCORING MATRIX ENGINE ---
+        let baseScore = 100; // Perfect score initialization
+
+        // Threat Risk Vectors
+        const highRiskVectors = ['casino', 'slot', 'win cash', 'free money', 'payout bug', 'freeze', 'cheat', 'crack'];
+        const moderateRiskVectors = ['pulsz', 'justplay', 'swagbucks', 'scratch', 'lotto', 'beta', 'reward', 'gift'];
+        
+        // Algorithmic Deduction Logic
+        highRiskVectors.forEach(vector => {
+            if (searchSignature.includes(vector)) baseScore -= 65;
+        });
+
+        moderateRiskVectors.forEach(vector => {
+            if (searchSignature.includes(vector)) baseScore -= 35;
+        });
+
+        // Structural Integrity Modifiers
+        if (searchSignature.length < 4) baseScore -= 20; 
+        if (searchSignature.includes('.com') || searchSignature.includes('.org')) baseScore += 5;
+
+        // Cap parameters
+        baseScore = Math.max(0, Math.min(100, baseScore));
 
         let finalStatus = "";
 
-        if (redList.some(flag => searchSignature.includes(flag))) {
-            light.style.backgroundColor = 'var(--red-glow)';
-            light.style.boxShadow = '0 0 25px var(--red-glow), 0 0 50px var(--red-glow)';
-            title.innerText = "CRITICAL BLOCK - RED SIGNAL";
-            title.style.color = 'var(--red-glow)';
-            resAction.innerText = "System-wide override activated. Entity matches known high-risk balance freeze mechanics or critical ad-loop traps.";
-            resSteps.innerText = "Execute absolute separation protocol. Isolate local data layers and remove signature connection.";
-            finalStatus = "Red Light";
+        // Determine System Tier outputs based on calculated Score Matrix
+        if (baseScore >= 75) {
+            light.style.backgroundColor = 'var(--green-glow)';
+            light.style.boxShadow = '0 0 25px var(--green-glow), 0 0 50px var(--green-glow)';
+            title.innerText = "VERIFIED CLEAR - GREEN SIGNAL";
+            title.style.color = 'var(--green-glow)';
+            resScore.innerText = baseScore + " / 100 (Optimal Integrity)";
+            resScore.style.color = 'var(--green-glow)';
+            resAction.innerText = "All architectural guardrails clear. Target structural alignment verified safe across community consensus logs.";
+            resSteps.innerText = "Clear for full operational velocity interactions. Appending signature to trusted history database indices.";
+            finalStatus = "Green Light";
         } 
-        else if (yellowList.some(flag => searchSignature.includes(flag)) || searchSignature.length < 4) {
+        else if (baseScore >= 40 && baseScore < 75) {
             light.style.backgroundColor = 'var(--yellow-glow)';
             light.style.boxShadow = '0 0 25px var(--yellow-glow), 0 0 50px var(--yellow-glow)';
             title.innerText = "CAUTION HOLD - YELLOW SIGNAL";
             title.style.color = 'var(--yellow-glow)';
+            resScore.innerText = baseScore + " / 100 (Elevated Risk)";
+            resScore.style.color = 'var(--yellow-glow)';
             resAction.innerText = "Velocity constraints applied. Signature exhibits tier-2 delayed withdrawal cycles and extreme ad thresholds.";
             resSteps.innerText = "Maintain strict operational observation. Avoid processing large volumes before verifying independent ledger status.";
             finalStatus = "Yellow Light";
         } 
         else {
-            light.style.backgroundColor = 'var(--green-glow)';
-            light.style.boxShadow = '0 0 25px var(--green-glow), 0 0 50px var(--green-glow)';
-            title.innerText = "VERIFIED CLEAR - GREEN SIGNAL";
-            title.style.color = 'var(--green-glow)';
-            resAction.innerText = "All architectural guardrails clear. Target structural alignment verified safe across community consensus logs.";
-            resSteps.innerText = "Clear for full operational velocity interactions. Appending signature to trusted history database indices.";
-            finalStatus = "Green Light";
+            light.style.backgroundColor = 'var(--red-glow)';
+            light.style.boxShadow = '0 0 25px var(--red-glow), 0 0 50px var(--red-glow)';
+            title.innerText = "CRITICAL BLOCK - RED SIGNAL";
+            title.style.color = 'var(--red-glow)';
+            resScore.innerText = baseScore + " / 100 (High Threat Vector)";
+            resScore.style.color = 'var(--red-glow)';
+            resAction.innerText = "System-wide override activated. Entity matches known high-risk balance freeze mechanics or critical ad-loop traps.";
+            resSteps.innerText = "Execute absolute separation protocol. Isolate local data layers and remove signature connection.";
+            finalStatus = "Red Light";
         }
 
         saveAuditToLog(name, finalStatus);
     }
 
+    // Storage Protocol System
     function saveAuditToLog(name, status) {
         let entries = JSON.parse(localStorage.getItem("auditLogs")) || [];
         if(entries.length === 0 || entries[0].name !== name || entries[0].status !== status) {
