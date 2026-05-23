@@ -121,7 +121,6 @@
             margin-top: 4px;
         }
 
-        /* Installer Dynamic Popup Card Layout */
         .app-install-banner {
             display: none;
             background: linear-gradient(90deg, #1e1b4b, #312e81);
@@ -167,23 +166,25 @@
             color: var(--neon-blue);
         }
 
-        select, input {
+        input {
             width: 100%;
-            padding: 16px;
+            padding: 18px;
             background: #020617;
             border: 2px solid rgba(99, 102, 241, 0.4);
             border-radius: 12px;
             color: white;
-            font-size: 1rem;
+            font-size: 1.05rem;
             font-weight: 600;
             transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            letter-spacing: 1px;
         }
 
-        select:focus, input:focus {
+        input:focus {
             outline: none;
             border-color: var(--neon-blue);
-            box-shadow: 0 0 20px rgba(56, 189, 248, 0.4);
+            box-shadow: 0 0 25px rgba(56, 189, 248, 0.5);
             transform: scale(1.01);
         }
 
@@ -262,6 +263,7 @@
             font-size: 0.8rem;
             display: block;
             margin-bottom: 4px;
+            letter-spacing: 1px;
         }
 
         .logger-section {
@@ -352,33 +354,8 @@
     </header>
 
     <div class="input-group">
-        <label for="platformName">Platform / App Target Signature</label>
-        <input type="text" id="platformName" placeholder="Enter target signature or domain..." required>
-    </div>
-
-    <div class="input-group">
-        <label for="domainAge">Entity Lifecycle Status</label>
-        <select id="domainAge">
-            <option value="old">Established History Matrix (> 30 Days)</option>
-            <option value="new">Unverified Lifecycle Entity (< 30 Days)</option>
-        </select>
-    </div>
-
-    <div class="input-group">
-        <label for="payoutStatus">Payout Ledger Integrity</label>
-        <select id="payoutStatus">
-            <option value="clean">Verified Clear Ledger (Consistent Withdrawal Release)</option>
-            <option value="delayed">Algorithmic Delay Protocol (High Thresholds / Flags)</option>
-            <option value="default">Critical Payment Default (Active Balance Freeze Logs)</option>
-        </select>
-    </div>
-
-    <div class="input-group">
-        <label for="compliance">Architectural Compliance Metadata</label>
-        <select id="compliance">
-            <option value="verified">Verified Parameters (Secure Protocol Layer)</option>
-            <option value="unverified">Null Compliance (Masked Identity / Hidden Data)</option>
-        </select>
+        <label for="platformName">Target Identity Signature (App Name or Domain)</label>
+        <input type="text" id="platformName" placeholder="e.g., JustPlay, Pulsz, SpinCasino..." required>
     </div>
 
     <button class="btn-audit" onclick="triggerCinematicAudit()">Initiate Engine Audit</button>
@@ -386,7 +363,7 @@
     <div class="output-panel" id="outputPanel">
         <div class="signal-container">
             <div class="traffic-light" id="lightSignal"></div>
-            <div class="status-title" id="statusTitle">---</div>
+            <div class="status-title" id="installBtn" id="statusTitle">---</div>
         </div>
         <div class="result-details">
             <p><span class="label-bold">Target Identity Matrix</span> <span id="resName" style="color:#fff; font-weight:700; font-size:1.1rem;"></span></p>
@@ -420,7 +397,6 @@
 <script>
     document.addEventListener("DOMContentLoaded", displayLogs);
 
-    // App Installation Interception Engine
     let deferredPrompt;
     const installBanner = document.getElementById('installBanner');
     const installBtn = document.getElementById('installBtn');
@@ -428,26 +404,33 @@
     window.addEventListener('beforeinstallprompt', (e) => {
         e.preventDefault();
         deferredPrompt = e;
-        installBanner.style.display = 'flex'; // Pop open the install card
+        installBanner.style.display = 'flex';
     });
 
-    installBtn.addEventListener('click', async () => {
-        if (deferredPrompt) {
-            deferredPrompt.prompt();
-            const { outcome } = await deferredPrompt.userChoice;
-            if (outcome === 'accepted') {
-                installBanner.style.display = 'none';
+    if(installBtn) {
+        installBtn.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    installBanner.style.display = 'none';
+                }
+                deferredPrompt = null;
             }
-            deferredPrompt = null;
-        }
-    });
+        });
+    }
 
     window.addEventListener('appinstalled', () => {
         installBanner.style.display = 'none';
-        console.log('Trust Engine App successfully integrated into system layers.');
     });
 
     function triggerCinematicAudit() {
+        const nameInput = document.getElementById('platformName').value.trim();
+        if(!nameInput) {
+            alert("MATRIX ERROR: Input signature required.");
+            return;
+        }
+
         const radar = document.getElementById('radarLine');
         const panel = document.getElementById('outputPanel');
         panel.style.display = "none";
@@ -458,11 +441,7 @@
     }
 
     function evaluatePlatform() {
-        const name = document.getElementById('platformName').value.trim() || "Unspecified Target";
-        const age = document.getElementById('domainAge').value;
-        const payout = document.getElementById('payoutStatus').value;
-        const compliance = document.getElementById('compliance').value;
-
+        const name = document.getElementById('platformName').value.trim();
         const panel = document.getElementById('outputPanel');
         const light = document.getElementById('lightSignal');
         const title = document.getElementById('statusTitle');
@@ -473,31 +452,39 @@
         panel.style.display = "block";
         resName.innerText = name;
 
+        // Autonomous Algorithmic Database Filtering
+        const searchSignature = name.toLowerCase();
+        
+        const redList = ['casino', 'slot', 'win cash', 'free money', 'payout bug', 'freeze'];
+        const yellowList = ['pulsz', 'justplay', 'swagbucks', 'scratch', 'lotto', 'beta'];
+
         let finalStatus = "";
 
-        if (payout === 'default') {
+        if (redList.some(flag => searchSignature.includes(flag))) {
             light.style.backgroundColor = 'var(--red-glow)';
             light.style.boxShadow = '0 0 25px var(--red-glow), 0 0 50px var(--red-glow)';
             title.innerText = "CRITICAL BLOCK - RED SIGNAL";
             title.style.color = 'var(--red-glow)';
-            resAction.innerText = "System-wide override activated. Entity actively logs payment defaults and user balance freezes.";
-            resSteps.innerText = "Execute absolute separation protocol. Isolate local data layers and commit signature to blacklist index.";
+            resAction.innerText = "System-wide override activated. Entity matches known high-risk balance freeze mechanics or critical ad-loop traps.";
+            resSteps.innerText = "Execute absolute separation protocol. Isolate local data layers and remove signature connection.";
             finalStatus = "Red Light";
-        } else if (age === 'new' || compliance === 'unverified' || payout === 'delayed') {
+        } 
+        else if (yellowList.some(flag => searchSignature.includes(flag)) || searchSignature.length < 4) {
             light.style.backgroundColor = 'var(--yellow-glow)';
             light.style.boxShadow = '0 0 25px var(--yellow-glow), 0 0 50px var(--yellow-glow)';
             title.innerText = "CAUTION HOLD - YELLOW SIGNAL";
             title.style.color = 'var(--yellow-glow)';
-            resAction.innerText = "Velocity constraints applied. Target exhibits unverified infrastructure parameters and delayed payout metrics.";
-            resSteps.innerText = "Maintain strict operational observation. Do not connect financial modules or submit personal validation tracking.";
+            resAction.innerText = "Velocity constraints applied. Signature exhibits tier-2 delayed withdrawal cycles and extreme ad thresholds.";
+            resSteps.innerText = "Maintain strict operational observation. Avoid processing large volumes before verifying independent ledger status.";
             finalStatus = "Yellow Light";
-        } else {
+        } 
+        else {
             light.style.backgroundColor = 'var(--green-glow)';
             light.style.boxShadow = '0 0 25px var(--green-glow), 0 0 50px var(--green-glow)';
             title.innerText = "VERIFIED CLEAR - GREEN SIGNAL";
             title.style.color = 'var(--green-glow)';
-            resAction.innerText = "All architectural guardrails clear. Target structural alignment verified safe across verified ledgers.";
-            resSteps.innerText = "Distribute validation certificate signature, append to trusted index matrix, and clear for full velocity interactions.";
+            resAction.innerText = "All architectural guardrails clear. Target structural alignment verified safe across community consensus logs.";
+            resSteps.innerText = "Clear for full operational velocity interactions. Appending signature to trusted history database indices.";
             finalStatus = "Green Light";
         }
 
