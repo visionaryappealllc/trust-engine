@@ -1,0 +1,16 @@
+{
+  "short_name": "TrustEngine",
+  "name": "Trust & Reputation Engine",
+  "icons": [
+    {
+      "src": "1778981814085.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "./index.html",
+  "background_color": "#020617",
+  "theme_color": "#020617",
+  "display": "standalone",
+  "orientation": "portrait"
+}
